@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from news_app.models import Post
 from django.utils import timezone
-
+from datetime import timedelta
+from django.views.generic import TemplateView
 
 # Create your views here.
 class HomeView(TemplateView):
