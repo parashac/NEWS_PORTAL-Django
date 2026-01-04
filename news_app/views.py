@@ -19,6 +19,7 @@ class HomeView(TemplateView):
         context["feature_post"] = (
             Post.objects.filter(published_at__isnull=False, status = "active")
             .order_by("-published_at" , "-views_count"))
+
         context["trending_news"] = Post.objects.filter(
             published_at__isnull=False, status ="active"
         ).order_by("published_at")[:4]
