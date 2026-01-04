@@ -11,9 +11,10 @@ class HomeView(TemplateView):
     def get_context_data(selfsellf, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["breaking_news"] = Post.objects.filter(
+        context["breaking_news"] = (
+                                       Post.objects.filter(
             published_at__isnull = False, satus= "active", is_breaking_news=True
-        ).ordered_by("-published_at")[:3]
+        ).ordered_by("-published_at"))[:3]
 
         context["feature_post"] = (
             Post.objects.filter(published_at__isnull=False, status = "active")
