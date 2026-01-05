@@ -9,50 +9,8 @@
       <div class="row">
         <!-- News Listing Column -->
         <div class="col-lg-8">
-          <!-- News Item 1 -->
-          <div class="card mb-4 shadow-sm news-list-item">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="https://placehold.co/300x200/28a745/ffffff?text=News+1"
-                     class="img-fluid rounded-start"
-                     alt="News 1" />
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">Latest News Article Title One</h5>
-                  <p class="card-text">
-                    This is a short description for the first latest news article. It gives a glimpse into the content.
-                  </p>
-                  <p class="card-text">
-                    <small class="text-muted">Published: April 3, 2025</small>
-                  </p>
-                  <a href="article.html" class="btn btn-outline-success btn-sm">Read More</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pagination -->
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
-
+         {% include "newsportal/list/left/post_list.html" %}
+          {% include "newsportal/list/left/pagination.html" %}
         </div>
 
         <!-- Sidebar (Reused Structure) -->
@@ -60,83 +18,14 @@
           <div class="position-sticky sticky-sidebar-offset">
             <!-- Adjust top based on navbar height -->
             <!-- Most Popular -->
-            <div class="p-4 mb-3 bg-light rounded sidebar-widget shadow-sm">
-              <h4 class="fst-italic section-title">
-                <span>Most Popular</span>
-              </h4>
-              <ul class="list-unstyled mb-0 popular-list">
-                <!-- Changed ol to ul -->
-                <li>
-                  <img src="https://placehold.co/70x70/28a745/ffffff?text=P1"
-                       alt="Popular 1" />
-                  <div>
-                      <a href="article.html" class="popular-title-link">Popular Article Title 1</a>
-                      <p class="popular-description">Short snippet describing the first popular article...</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="https://placehold.co/70x70/6c757d/ffffff?text=P2"
-                       alt="Popular 2" />
-                   <div>
-                      <a href="article.html" class="popular-title-link">Second Most Read Story</a>
-                      <p class="popular-description">Brief summary for the second story goes here.</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="https://placehold.co/70x70/17a2b8/ffffff?text=P3"
-                       alt="Popular 3" />
-                   <div>
-                      <a href="article.html" class="popular-title-link">Another Engaging Headline</a>
-                      <p class="popular-description">This is the description for the third item.</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="https://placehold.co/70x70/ffc107/333333?text=P4"
-                       alt="Popular 4" />
-                   <div>
-                      <a href="article.html" class="popular-title-link">Top Story This Week</a>
-                      <p class="popular-description">A short summary for the fourth popular article.</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="https://placehold.co/70x70/fd7e14/ffffff?text=P5"
-                       alt="Popular 5" />
-                   <div>
-                      <a href="article.html" class="popular-title-link">Fifth Popular Article</a>
-                      <p class="popular-description">Description text for the fifth and final item shown.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            {% include "newsportal/home/right/most_popular.html" %}
 
             <!-- Advertisement -->
-            <div class="p-4 mb-3 rounded sidebar-widget shadow-sm text-center">
-              <h4 class="fst-italic section-title">
-                <span>Advertisement</span>
-              </h4>
-              <img src="https://placehold.co/300x250/e8f5e9/333333?text=Ad+Banner"
-                   class="img-fluid"
-                   alt="Advertisement" />
-            </div>
+            {% include "newsportal/home/right/advertisement.html" %}
 
             <!-- Newsletter Subscription -->
-            <div id="newsletter-section-latest"
-                 class="p-4 mb-3 rounded sidebar-widget newsletter-widget shadow-sm">
-              <h4 class="fst-italic section-title">
-                <span>Subscribe</span>
-              </h4>
-              <p>Get the latest news delivered straight to your inbox.</p>
-              <form>
-                <div class="mb-3">
-                  <label for="newsletterEmailLatest" class="form-label visually-hidden">Email address</label>
-                  <input type="email"
-                         class="form-control"
-                         id="newsletterEmailLatest"
-                         placeholder="Enter your email" />
-                </div>
-                <button type="submit" class="btn btn-success w-100">Subscribe</button>
-              </form>
-            </div>
+            {% include "newsportal/home/right/newsletter.html" %}
+>
           </div>
         </div>
       </div>
