@@ -25,8 +25,19 @@ class HomeView(TemplateView):
         ).order_by("published_at")[:4]
 
         one_week_ago = timezone.now() - timedelta(days=7)
+
         context["weekly_top_posts"] = Post.objects.filter(
-            published_at__isnull =False, status ="active",published_at__gte =one_week_ago
+            published_at__isnull =False, status ="active", published_at__gte =one_week_ago
         ).order_by("-published_at", "-views_count")[:5]
 
         return context
+class PostListView(ListView):
+    model =Post
+    template_name = "newsportal/list/list.html"
+    context_object_name = "posts"
+    paginate_by =1
+
+    def get_queryset(selfself):
+        return Post.objects.filter(
+            published_at__isnull = False, status ="active"
+        ).order_by("-published_at")
