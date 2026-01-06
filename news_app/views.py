@@ -2,7 +2,7 @@ from django.shortcuts import render
 from news_app.models import Post
 from django.utils import timezone
 from datetime import timedelta
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 # Create your views here.
 class HomeView(TemplateView):
@@ -35,9 +35,16 @@ class PostListView(ListView):
     model =Post
     template_name = "newsportal/list/list.html"
     context_object_name = "posts"
-    paginate_by =1
+    paginate_by = 1
 
     def get_queryset(selfself):
         return Post.objects.filter(
             published_at__isnull = False, status ="active"
         ).order_by("-published_at")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["popular_post"] = Post.objects.filter(
+            published_at__isnull = False, status ="active").order_by("-published_at")[:5]
+
+        return context
