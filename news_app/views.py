@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from news_app.models import Post
+from news_app.models import Post, Advertisement
 from django.utils import timezone
 from datetime import timedelta
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 
 # Create your views here.
 class HomeView(TemplateView):
@@ -30,6 +30,9 @@ class HomeView(TemplateView):
             published_at__isnull =False, status ="active", published_at__gte =one_week_ago
         ).order_by("-published_at", "-views_count")[:5]
 
+        context ['advertisement'] = (
+                Advertisement.objects.all().order_by("-created_at").first()
+        )
         return context
 class PostListView(ListView):
     model =Post
@@ -47,25 +50,39 @@ class PostListView(ListView):
         context["popular_post"] = Post.objects.filter(
             published_at__isnull = False, status ="active").order_by("-published_at")[:5]
 
+        context['advertisement'] = (
+            Advertisement.objects.all().order_by("-created_at").first()
+        )
         return context
 
-class CategoryListView(ListView):
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "newsportal/detail/detail.html"
+    context_object_name = "post"
 
 
-class ContactCreateview(SuccessMessageMixin, CreateView):
-    model = Contact
-    template_name = "newsportal/contact.html"
-    form_class = ContactForm
-    success_yrl =  reverse_lazy ("contact")
-    success_message = "Your message has been sent successfully"
+def get_query(self):
+    query = super().get_queryset()
+    query = query.filter(published_at__isnull =False, status ="active")
+    return query
 
-    def form_invalid(self, form):
-        message.error(
-            selfrequest,
-            "there was an error sending your message. Please check the form",
+# class CategoryListView(ListView):
 
-        )
-        return super().form_invalid(form)
+
+# class ContactCreateview(SuccessMessageMixin, CreateView):
+#     model = Contact
+#     template_name = "newsportal/contact.html"
+#     form_class = ContactForm
+#     success_yrl =  reverse_lazy ("contact")
+#     success_message = "Your message has been sent successfully"
+#
+#     def form_invalid(self, form):
+#         message.error(
+#             selfrequest,
+#             "there was an error sending your message. Please check the form",
+#
+#         )
+#         return super().form_invalid(form)
 
 
 
