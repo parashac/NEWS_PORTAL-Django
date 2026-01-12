@@ -1,0 +1,119 @@
+   {% extends "newsportal/base.html" %}
+   {% block content %}
+
+    <!-- Main Content Area -->
+    <div class="container mt-4">
+        <!-- Dynamically set category name -->
+        <h1 class="mb-4 section-title"><span>Category: <span class="category-name-placeholder">Politics</span></span></h1>
+
+        <div class="row">
+            <!-- News Listing Column -->
+            <div class="col-lg-8">
+                <!-- News Item 1 (Example) -->
+                <div class="card mb-4 shadow-sm news-list-item">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="https://placehold.co/300x200/dc3545/ffffff?text=Politics+1" class="img-fluid rounded-start" alt="Politics News 1">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Political News Article Title One</h5>
+                                <p class="card-text">This is a short description for the first political news article. It gives a glimpse into the content.</p>
+                                <p class="card-text"><small class="text-muted">Published: April 3, 2025</small></p>
+                                <a href="article.html" class="btn btn-outline-success btn-sm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Item 2 (Example) -->
+                <div class="card mb-4 shadow-sm news-list-item">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="https://placehold.co/300x200/dc3545/ffffff?text=Politics+2" class="img-fluid rounded-start" alt="Politics News 2">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Second Political News Headline</h5>
+                                <p class="card-text">A brief summary of the second political news item goes here, enticing the reader.</p>
+                                <p class="card-text"><small class="text-muted">Published: April 2, 2025</small></p>
+                                <a href="article.html" class="btn btn-outline-success btn-sm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add more news items specific to the category here -->
+                <!-- ... -->
+
+                <!-- Pagination (Reused Structure) -->
+                <nav aria-label="Page navigation example" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+
+            <!-- Sidebar (Reused Structure) -->
+            <div class="col-lg-4">
+                 <div class="position-sticky sticky-sidebar-offset">
+                    <!-- Most Popular -->
+                    <div class="p-4 mb-3 bg-light rounded sidebar-widget shadow-sm">
+                        <h4 class="fst-italic section-title"><span>Most Popular</span></h4>
+                        <ul class="list-unstyled mb-0 popular-list">
+                            <li>
+                                <img src="https://placehold.co/55x55/28a745/ffffff?text=P1" alt="Popular 1">
+                                <a href="article.html">Popular Article Title 1</a>
+                            </li>
+                            <li>
+                                <img src="https://placehold.co/55x55/6c757d/ffffff?text=P2" alt="Popular 2">
+                                <a href="article.html">Second Most Read Story</a>
+                            </li>
+                            <li>
+                                <img src="https://placehold.co/55x55/17a2b8/ffffff?text=P3" alt="Popular 3">
+                                <a href="article.html">Another Engaging Headline</a>
+                            </li>
+                            <li>
+                                <img src="https://placehold.co/55x55/ffc107/333333?text=P4" alt="Popular 4">
+                                <a href="article.html">Top Story This Week</a>
+                            </li>
+                            <li>
+                                <img src="https://placehold.co/55x55/fd7e14/ffffff?text=P5" alt="Popular 5">
+                                <a href="article.html">Fifth Popular Article</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Advertisement -->
+                    <div class="p-4 mb-3 rounded sidebar-widget shadow-sm text-center">
+                        <h4 class="fst-italic section-title"><span>Advertisement</span></h4>
+                        <img src="https://placehold.co/300x250/e8f5e9/333333?text=Ad+Banner" class="img-fluid" alt="Advertisement">
+                    </div>
+
+                    <!-- Newsletter Subscription -->
+                    <div class="p-4 mb-3 rounded sidebar-widget newsletter-widget shadow-sm">
+                        <h4 class="fst-italic section-title"><span>Subscribe</span></h4>
+                        <p>Stay updated with our newsletter.</p>
+                        <form>
+                            <div class="mb-3">
+                                <label for="newsletterEmailCategory" class="form-label visually-hidden">Email address</label>
+                                <input type="email" class="form-control" id="newsletterEmailCategory" placeholder="Enter your email">
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   {% block content %}

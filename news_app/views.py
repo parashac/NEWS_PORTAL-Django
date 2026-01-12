@@ -52,5 +52,24 @@ class PostListView(ListView):
 class CategoryListView(ListView):
 
 
+class ContactCreateview(SuccessMessageMixin, CreateView):
+    model = Contact
+    template_name = "newsportal/contact.html"
+    form_class = ContactForm
+    success_yrl =  reverse_lazy ("contact")
+    success_message = "Your message has been sent successfully"
+
+    def form_invalid(self, form):
+        message.error(
+            selfrequest,
+            "there was an error sending your message. Please check the form",
+
+        )
+        return super().form_invalid(form)
+
+
+
+
+
 
 
