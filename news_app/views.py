@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from news_app.models import Post, Advertisement, Category, Tag
+from django.urls import reverse_lazy
+
+from news_app.forms import ContactForm
+from news_app.models import Post, Advertisement, Category, Tag, Contact
 from django.utils import timezone
 from datetime import timedelta
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
 # Create your views here.
 
@@ -115,21 +118,22 @@ class CategoryListView(ListView):
 #     template_name = 'newsportal/tags.html'
 #     context_object_name = 'tags'
 
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+class ContactCreateview(SuccessMessageMixin, CreateView):
+    model = Contact
+    template_name = "newsportal/contact.html"
+    form_class = ContactForm
+    success_yrl =  reverse_lazy ("contact")
+    success_message = "Your message has been sent successfully"
 
-# class ContactCreateview(SuccessMessageMixin, CreateView):
-#     model = Contact
-#     template_name = "newsportal/contact.html"
-#     form_class = ContactForm
-#     success_yrl =  reverse_lazy ("contact")
-#     success_message = "Your message has been sent successfully"
-#
-#     def form_invalid(self, form):
-#         message.error(
-#             selfrequest,
-#             "there was an error sending your message. Please check the form",
-#
-#         )
-#         return super().form_invalid(form)
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            "there was an error sending your message. Please check the form",
+
+        )
+        return super().form_invalid(form)
 
 
 

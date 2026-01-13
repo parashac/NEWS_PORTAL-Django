@@ -5,8 +5,10 @@ urlpatterns = [
     path("", views.HomeView.as_view(), name = "home"),
     path("post-list/", views.PostListView.as_view(), name="post-list"),
     path("post-detail/<int:pk>/", views.PostDetailView.as_view(), name="post-detail"),
-path("post-by-category/<int:category_id>/",
-     views.PostByCategoryView.as_view(),
-     name="post-by-category"),
-path("categories/", views.CategoryListView.as_view(), name="categories"),
+    path("post-by-category/<int:category_id>/",
+            views.PostByCategoryView.as_view(),
+            name="post-by-category"
+         ),
+    path("contact/", views.ContactCreateview.as_view(), name="contact"),
+path("category-list/",views.CategoryListView.as_view(), name='category-list'),
 ]
