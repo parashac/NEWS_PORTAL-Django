@@ -25,24 +25,17 @@
                  role="button"
                  data-bs-toggle="dropdown"
                  aria-expanded="false">Categories</a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="category.html">Politics</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="category.html">Sports</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="category.html">Technology</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="category.html">Entertainment</a>
-                </li>
+               <ul class="dropdown-menu">
+                {% for category in categories %}
+                  <li>
+                    <a class="dropdown-item" href="{% url 'post-by-category' category.id %}">{{ category.name|title }}</a>
+                  </li>
+                {% endfor %}
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a class="dropdown-item" href="all-categories.html">All Categories</a>
+                  <a class="dropdown-item" href="{% url 'categories' %}">All Categories</a>
                 </li>
                 <li>
                   <a class="dropdown-item" href="all-tags.html">All Tags</a>

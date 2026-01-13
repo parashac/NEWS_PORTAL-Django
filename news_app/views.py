@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from news_app.models import Post, Advertisement
+from news_app.models import Post, Advertisement, Category, Tag
 from django.utils import timezone
 from datetime import timedelta
 from django.views.generic import TemplateView, ListView, DetailView
@@ -90,8 +90,30 @@ class PostDetailView(DetailView):
         )
 
         return context
+class PostByCategoryView(SidebarMixin, ListView):
+    model = Post
+    template_name = 'newsportal/list/list.html'
+    context_object_name = 'posts'
+    paginate_by = 1
 
-# class CategoryListView(ListView):
+    def get_queryset(self):
+        query = super().get_queryset()
+        query = query.filter(
+            published_at__isnull=False,
+            status='active',
+            category__id=self.kwargs["category_id"],
+        ).order_by("-published_at")
+        return query
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'newsportal/categories.html'
+    context_object_name = 'categories' #categories.object.all()
+
+# class TagListView(ListView):
+#     model = Tag
+#     template_name = 'newsportal/tags.html'
+#     context_object_name = 'tags'
 
 
 # class ContactCreateview(SuccessMessageMixin, CreateView):
