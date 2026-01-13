@@ -10,7 +10,7 @@
                   By <a href="#" class="text-decoration-none ms-1">{{ post.author.get_full_name }}</a>
                 </span>
                 <span><i class="bi bi-calendar-event"></i> Published: April 3, 2025</span>
-                <span><i class="bi bi-eye"></i> Views: {{ post.views_count}}</span>
+                <span><i class="bi bi-eye"></i> Views: {{ post.views_count }}</span>
                 <span><i class="bi bi-folder"></i>Category: <a href="#" class="text-decoration-none ms-1">{{ post.category.name }}</a></span>
                 <span><i class="bi bi-tags"></i>Tags: <a href="#" class="text-decoration-none ms-1">
                   {% for tag in post.tag.all %}
