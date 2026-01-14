@@ -6,7 +6,10 @@
               <h1 class="article-title">Major Event Unfolds: In-Depth Analysis</h1>
               <div class="article-meta">
                 <span class="author-profile">
-                  <img src="https://placehold.co/50/28a745/ffffff?text=A" alt="Author" />
+                  <img src="{{ post.author.userprofile.image.url }}"
+                       width="50"
+                       height="50"
+                       alt="Author" />
                   By <a href="#" class="text-decoration-none ms-1">{{ post.author.get_full_name }}</a>
                 </span>
                 <span><i class="bi bi-calendar-event"></i> Published: April 3, 2025</span>
@@ -18,7 +21,7 @@
                   {% endfor %}
                 </a></span>
               </div>
-              <img src="{{ post.image_url }}"
+              <img src="{{ post.feature_image.url }}"
                    width="1200"
                    height="500"
                    alt="Featured Article Image" />
