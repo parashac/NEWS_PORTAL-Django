@@ -65,6 +65,15 @@ class Contact(TimeStampModel):
     class Meta:
         ordering = ["created_at"]
 
+class OurTeam(TimeStampModel):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="our_teams/%Y/%m/%d", blank=False)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
 
 
 

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from news_app.forms import ContactForm
-from news_app.models import Post, Advertisement, Category, Tag, Contact
+from news_app.models import Post, Advertisement, Category, Tag, Contact, OurTeam
 from django.utils import timezone
 from datetime import timedelta
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
@@ -136,6 +136,13 @@ class ContactCreateview(SuccessMessageMixin, CreateView):
         return super().form_invalid(form)
 
 
+class AboutView(TemplateView):
+    template_name = 'newsportal/about.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["our_teams"] = OurTeam.objects.all()
+        return context
 
 
 

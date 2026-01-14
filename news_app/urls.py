@@ -10,5 +10,6 @@ urlpatterns = [
             name="post-by-category"
          ),
     path("contact/", views.ContactCreateview.as_view(), name="contact"),
-path("category-list/",views.CategoryListView.as_view(), name='category-list'),
+    path("category-list/",views.CategoryListView.as_view(), name='category-list'),
+    path("about-us/",views.AboutView.as_view(), name='about-us'),
 ]
