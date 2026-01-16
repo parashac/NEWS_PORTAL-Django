@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from news_app.forms import ContactForm
 from news_app.models import Post, Advertisement, Category, Tag, Contact, OurTeam
@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
-# Create your views here.
+    # Create your views here.
 
 class SidebarMixin:
     def get_context_data(self, **kwargs):
@@ -93,6 +93,33 @@ class PostDetailView(DetailView):
         )
 
         return context
+
+    def get_success(self):
+        return reverse("post-detail", kwargs={"pk":self.object.pk})
+    def post(self, request, *args, **kwargs):
+            self.object = self.get_object()
+            form = self.get_form()
+
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+
+
+
+
+    def form_valid(self, form):
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.user = self.request.user
+            comment.save()
+
+            messages.success(
+                self.request,
+                "Your comment has been added successfully."
+            )
+
+            return super().form_valid(form)
 class PostByCategoryView(SidebarMixin, ListView):
     model = Post
     template_name = 'newsportal/list/list.html'
