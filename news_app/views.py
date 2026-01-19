@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
+from django.views.generic.edit import FormMixin
 
-from news_app.forms import ContactForm
-from news_app.models import Post, Advertisement, Category, Tag, Contact, OurTeam
+from news_app.forms import ContactForm, CommentForm
+from news_app.models import Post, Advertisement, Category, Tag, Contact, OurTeam, Comment
 from django.utils import timezone
 from datetime import timedelta
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
@@ -63,15 +64,15 @@ class PostListView(ListView):
         ).order_by("-published_at")
 
 
-class PostDetailView(DetailView):
+class PostDetailView(SidebarMixin, FormMixin, DetailView):
     model = Post
     template_name = "newsportal/detail/detail.html"
     context_object_name = "post"
+    form_class = CommentForm
 
-
-    def get_query(self):
-        query = super().get_queryset()
-        query = query.filter(published_at__isnull =False, status ="active")
+    def get_queryset(self):
+        query = super().get_queryset()  # Post.objects.all()
+        query = query.filter(published_at__isnull=False, status="active")
         return query
 
     def get_context_data(self, **kwargs):
@@ -91,35 +92,36 @@ class PostDetailView(DetailView):
             .exclude(id=self.object.id)
             .order_by("-published_at", "-views_count")[:2]
         )
-
+        context["comments"] = Comment.objects.filter(
+                post=self.object).order_by("-created_at")
         return context
 
-    def get_success(self):
-        return reverse("post-detail", kwargs={"pk":self.object.pk})
+    def get_success_url(self):
+        return reverse("post-detail", kwargs={"pk": self.object.pk})
+
+
+
     def post(self, request, *args, **kwargs):
-            self.object = self.get_object()
-            form = self.get_form()
+        self.object = self.get_object()
+        form = self.get_form()
 
-            if form.is_valid():
-                return self.form_valid(form)
-            else:
-                return self.form_invalid(form)
-
-
-
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def form_valid(self, form):
-            comment = form.save(commit=False)
-            comment.post = self.object
-            comment.user = self.request.user
-            comment.save()
+        comment = form.save(commit=False)
+        comment.post = self.object
+        comment.user = self.request.user
+        comment.save()
 
-            messages.success(
-                self.request,
-                "Your comment has been added successfully."
-            )
+        messages.success(
+            self.request,
+            "Your comment has been added successfully."
+        )
 
-            return super().form_valid(form)
+        return super().form_valid(form)
 class PostByCategoryView(SidebarMixin, ListView):
     model = Post
     template_name = 'newsportal/list/list.html'
@@ -151,7 +153,7 @@ class ContactCreateview(SuccessMessageMixin, CreateView):
     model = Contact
     template_name = "newsportal/contact.html"
     form_class = ContactForm
-    success_yrl =  reverse_lazy ("contact")
+    success_yrl = reverse_lazy ("contact")
     success_message = "Your message has been sent successfully"
 
     def form_invalid(self, form):

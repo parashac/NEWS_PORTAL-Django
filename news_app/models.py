@@ -83,7 +83,17 @@ class UserProfile(TimeStampModel):
     def __str__(self):
         return self.user.username
 
+#post.comment_set.all
 class Comment(TimeStampModel):
-    text = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey("auth.user", on_delete=models.CASCADE)
-    message =  models.TextField
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+    content = models.TextField()
+
+    def __str__(self):
+        return f"{self.content[:50]} | {self.user.username}"
