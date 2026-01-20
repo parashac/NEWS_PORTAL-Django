@@ -6,7 +6,7 @@ from news_app.forms import ContactForm, CommentForm
 from news_app.models import Post, Advertisement, Category, Tag, Contact, OurTeam, Comment
 from django.utils import timezone
 from datetime import timedelta
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, View
 
     # Create your views here.
 
@@ -174,6 +174,53 @@ class AboutView(TemplateView):
         return context
 
 
+from django.core.paginator import PageNotAnInteger, Paginator
+from django.db.models import Q
 
+# | => OR
+# & => and
+
+class PostSearchView(View):
+    template_name = "newsportal/list/list.html"
+
+    def get(self, request, *args, **kwargs):
+        # query=nepali search => title=nepal or content=nepal
+        print(request.GET)
+        query = request.GET["query"]  # nepal => NePaL
+
+        post_list = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+            & Q(status="active")
+            & Q(published_at__isnull=False)
+        ).order_by(
+            "-published_at"
+        )  # QuerySet => ORM
+
+        # pagination start
+        page = request.GET.get("page", 1)  # 1
+        paginate_by = 1
+        paginator = Paginator(post_list, paginate_by)
+
+        try:
+            posts = paginator.page(page) #1
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        # pagination end
+        popular_posts = Post.objects.filter(
+            published_at__isnull=False, status="active"
+        ).order_by("-published_at")[:5]
+
+        advertisement = Advertisement.objects.all().order_by("-created_at").first()
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "page_obj": posts,
+                "query": query,
+                "popular_posts": popular_posts,
+                "advertisement": advertisement,
+            },
+        )
 
 
