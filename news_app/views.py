@@ -1,8 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import FormMixin
 
-from news_app.forms import ContactForm, CommentForm
+from news_app.forms import ContactForm, CommentForm, NewsLetterForm
 from news_app.models import Post, Advertisement, Category, Tag, Contact, OurTeam, Comment
 from django.utils import timezone
 from datetime import timedelta
@@ -223,4 +224,37 @@ class PostSearchView(View):
             },
         )
 
+class NewsletterView(View):
 
+    def post(self, request):
+        is_ajax = request.headers.get("x-requested-with")
+
+        if is_ajax == "XMLHttpRequest":
+            form = NewsLetterForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+                return JsonResponse(
+                    {
+                        "success": True,
+                        "message": "Successfully subscribed to the newsletter.",
+                    },
+                    status=201,
+                )
+            else:
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "message": "Cannot subscribe to the newsletter.",
+                    },
+                    status=400,
+                )
+
+        else:
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": "Cannot process. Must be an AJAX XMLHttpRequest",
+                },
+                status=400,
+            )

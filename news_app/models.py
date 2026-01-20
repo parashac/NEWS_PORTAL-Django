@@ -83,6 +83,12 @@ class UserProfile(TimeStampModel):
     def __str__(self):
         return self.user.username
 
+class NewsLetter(TimeStampModel):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email
+
 #post.comment_set.all
 class Comment(TimeStampModel):
     post = models.ForeignKey(
