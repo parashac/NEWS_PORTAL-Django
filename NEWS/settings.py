@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'news_app',
     'tinymce',
     'accounts',
+    'api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -128,7 +131,9 @@ MEDIA_ROOT = "media"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 from django.contrib.messages import constants as messages
+
 MESSAGE_TAGS = {
      messages.DEBUG: "secondary",
      messages.INFO: "info",
@@ -139,3 +144,7 @@ MESSAGE_TAGS = {
 
 
  }
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+}

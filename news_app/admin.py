@@ -1,6 +1,7 @@
 from django.contrib import admin
 from tinymce.widgets import TinyMCE
 
+
 from news_app.models import Post, Category, Tag, Advertisement, Contact, OurTeam, UserProfile, Comment, NewsLetter
 
 # Register your models here.
@@ -24,7 +25,7 @@ class PostAdminForm(forms.ModelForm):
         model = Post
         fields ="__all__"
 
-
+from unfold.admin import ModelAdmin
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(ModelAdmin):
     form = PostAdminForm
