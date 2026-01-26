@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
-from news_app.models import Tag, Category
-from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer
+from news_app.models import Tag, Category, Post
+from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer, PostSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -49,3 +49,21 @@ class CategoryViewSet(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:
             return [permissions.AllowAny()]
         return super().get_permissions()
+
+class PostViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Posts to be viewed or edited.
+    """
+    queryset = Post.objects.all().order_by("-published_at")
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return super().get_permissions()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.action in ["list", "retrieve"]:
+            queryset = queryset.filter(status="active", published_at__isnull=False)
