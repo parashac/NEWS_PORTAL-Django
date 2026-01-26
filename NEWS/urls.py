@@ -23,9 +23,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tinymce/', include("tinymce.urls")),
-    path('api/v1/',include("api.urls")),
+    path('api/v1/', include("api.urls")),
     path("accounts/", include("accounts.urls")),
-    path("",include("news_app.urls")),
+    path("", include("news_app.urls")),
 ]
 
 if settings.DEBUG:
