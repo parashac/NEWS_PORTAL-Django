@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/v1/', include("api.urls")),
     path("accounts/", include("accounts.urls")),
     path("", include("news_app.urls")),
+    path("", include("report.urls")),
 ]
 
 if settings.DEBUG:

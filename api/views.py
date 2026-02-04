@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 from news_app.models import Tag, Category, Post
 from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer, PostSerializer
-
+from rest_framework.response import Response
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -67,3 +67,19 @@ class PostViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
         if self.action in ["list", "retrieve"]:
             queryset = queryset.filter(status="active", published_at__isnull=False)
+
+        from django.db.models import Q
+        query = self.request.query_params.get("query", None)
+        if query:
+            queryset = queryset.filter(
+                Q(title_icontains=query) | Q(contenr_icontains=query)
+            )
+        return queryset
+
+    def retrieve(self, rerquest, *args, **kwargs):
+        instance = self.get_object()
+        instance.views_count +=1
+        instance.save(update_fields=['views_count'])
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
