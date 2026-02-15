@@ -51,3 +51,5 @@ class PostSerializer(serializers.ModelSerializer):
     def validate(self, data):
         data["author"] = self.context["request"].user
         return data
+
+

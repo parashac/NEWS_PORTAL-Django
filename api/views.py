@@ -3,7 +3,7 @@ from rest_framework import permissions, viewsets
 from news_app.models import Tag, Category, Post
 from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer, PostSerializer
 from rest_framework.response import Response
-
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -58,28 +58,59 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAdminUser]
 
-    def get_permissions(self):
-        if self.action in ["list", "retrieve"]:
-            return [permissions.AllowAny()]
-        return super().get_permissions()
-
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.action in ["list", "retrieve"]:
             queryset = queryset.filter(status="active", published_at__isnull=False)
 
-        from django.db.models import Q
-        query = self.request.query_params.get("query", None)
-        if query:
-            queryset = queryset.filter(
-                Q(title_icontains=query) | Q(contenr_icontains=query)
-            )
+            # search start:
+            from django.db.models import Q
+
+            query = self.request.query_params.get("query", None)
+            if query:
+                # Search by title and content (case-insensitive)
+                queryset = queryset.filter(
+                    Q(title__icontains=query) | Q(content__icontains=query)
+                )
+            # search end
+
         return queryset
 
-    def retrieve(self, rerquest, *args, **kwargs):
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return super().get_permissions()
+
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.views_count +=1
-        instance.save(update_fields=['views_count'])
+        instance.views_count += 1  # Increment the views_count
+        instance.save(update_fields=["views_count"])  # Save only the updated field
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+class PostListByCategoryView(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(
+            status="active",
+            published_at__isnull=False,
+            category=self.kwargs["category_id"],
+        )
+        return queryset
+class PostListByTagView(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(
+            status="active",
+            published_at__isnull=False,
+            tag=self.kwargs["tag_id"],
+        )
+        return queryset

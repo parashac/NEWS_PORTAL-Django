@@ -16,4 +16,13 @@ router.register(r"post", views.PostViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("post-by-category/<int:category_id>/", views.PostListByCategoryView.as_view(),
+         name="post-list-by-category-api",
+    ),
+    path(
+        "post-by-tag/<int:tag_id>/",
+        views.PostListByTagView.as_view(),
+        name="post-list-by-tag-api",
+    ),
+
 ]
