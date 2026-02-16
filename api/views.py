@@ -1,7 +1,10 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
+from rest_framework.views import APIView
+from django.utils import timezone
 from news_app.models import Tag, Category, Post
-from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer, PostSerializer
+from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer, PostSerializer, PostPublishSerializer
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 class UserViewSet(viewsets.ModelViewSet):
@@ -114,3 +117,30 @@ class PostListByTagView(ListAPIView):
             tag=self.kwargs["tag_id"],
         )
         return queryset
+
+
+class DraftListView(ListAPIView):
+    queryset = Post.objects.filter(published_at__isnull=True)
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class DraftDetailView(RetrieveAPIView):
+    queryset = Post.objects.filter(published_at__isnull=True)
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class PostPublishViewSet(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = PostPublishSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            data = serializer.data
+
+            # publish the post
+            post = Post.objects.get(pk=data["id"])
+            post.published_at = timezone.now()
+            post.save()
+
+            serialized_data = PostSerializer(post).data
+            return Response(serialized_data, status=status.HTTP_200_OK)

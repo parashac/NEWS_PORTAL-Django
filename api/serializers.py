@@ -52,4 +52,5 @@ class PostSerializer(serializers.ModelSerializer):
         data["author"] = self.context["request"].user
         return data
 
-
+class PostPublishSerializer(serializers.Serializer):
+    id = serializers.IntegerField()

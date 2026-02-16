@@ -24,5 +24,20 @@ urlpatterns = [
         views.PostListByTagView.as_view(),
         name="post-list-by-tag-api",
     ),
+    path(
+        "draft-list/",
+        views.DraftListView.as_view(),
+        name="draft-list-api",
+    ),
+    path(
+        "draft-detail/<int:pk>/",
+        views.DraftDetailView.as_view(),
+        name="draft-detail-api",
+    ),
 
+    path(
+        "post-publish/",
+        views.PostPublishViewSet.as_view(),
+        name="post-publish-api",
+    ),
 ]
