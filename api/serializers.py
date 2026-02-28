@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from news_app.models import Tag, Post
-from news_app.models import Category
+from news_app.models import Category, NewsLetter
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -54,3 +54,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostPublishSerializer(serializers.Serializer):
     id = serializers.IntegerField()
+
+class NewsletterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsLetter
+        fields = "__all__"
