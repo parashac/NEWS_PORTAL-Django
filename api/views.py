@@ -2,9 +2,9 @@ from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 from rest_framework.views import APIView
 from django.utils import timezone
-from news_app.models import Tag, Category, Post
-from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer, PostSerializer, PostPublishSerializer
-from rest_framework import status
+from news_app.models import Tag, Category, Post, NewsLetter
+from api.serializers import GroupSerializer, UserSerializer, TagSerializer, CategorySerializer, PostSerializer, PostPublishSerializer, NewsletterSerializer
+from rest_framework import status, exceptions
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 class UserViewSet(viewsets.ModelViewSet):
@@ -144,3 +144,16 @@ class PostPublishViewSet(APIView):
 
             serialized_data = PostSerializer(post).data
             return Response(serialized_data, status=status.HTTP_200_OK)
+
+class NewsletterViewSet(viewsets.ModelViewSet):
+    queryset = NewsLetter.objects.all()
+    serializer_class = NewsletterSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve", "destroy"]:
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()
+
+    def update(self, request, *args, **kwargs):
+        raise exceptions.MethodNotAllowed(request.method)
